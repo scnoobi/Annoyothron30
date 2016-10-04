@@ -53,8 +53,12 @@ namespace BeAnnoyingEvery30Seconds
                 {
                     
                     SystemSounds.Asterisk.Play();
-                    Thread.Sleep(400);
-                    iHaveBeenBeepingForXSeconds += 400;
+                    Thread.Sleep(250);
+                    SystemSounds.Beep.Play();
+                    Thread.Sleep(250);
+                    SystemSounds.Exclamation.Play();
+                    Thread.Sleep(28000);
+                    iHaveBeenBeepingForXSeconds += 28000;
                     //minutes    seconds   miliseconds
                     if (iHaveBeenBeepingForXSeconds > 10* 60*1000)
                     {
