@@ -16,7 +16,7 @@ namespace BeAnnoyingEvery30Seconds
         //TODO: make the beeping only happen for 10 minutes then restart it.
 
 
-
+        static float iHaveBeenBeepingForXSeconds = 0;
         private static bool shouldIBeep = false;
         private static bool shouldIContinueAskingForPassword = false;
         static void Main(string[] args)
@@ -32,15 +32,14 @@ namespace BeAnnoyingEvery30Seconds
             beepThread.Start();
             while (true)
             {
-                Thread.Sleep(30 * 1000 * 60);
-                shouldIBeep = true;
-                shouldIContinueAskingForPassword = true;
+                //minutes    seconds   miliseconds
+                Thread.Sleep(30 * 60 * 1000);
+                BeepingState(true);
                 while (shouldIContinueAskingForPassword)
                 {
                     if (Console.ReadLine().ToLower() == "i looked away for 20 seconds")
                     {
-                        shouldIContinueAskingForPassword = false;
-                        shouldIBeep = false;
+                        BeepingState(false);
                     }
                 }
             }
@@ -52,11 +51,27 @@ namespace BeAnnoyingEvery30Seconds
             {
                 while (shouldIBeep)
                 {
+                    
                     SystemSounds.Asterisk.Play();
                     Thread.Sleep(400);
+                    iHaveBeenBeepingForXSeconds += 400;
+                    //minutes    seconds   miliseconds
+                    if (iHaveBeenBeepingForXSeconds > 10* 60*1000)
+                    {
+                        iHaveBeenBeepingForXSeconds = 0;
+                        BeepingState(false);
+                        
+                    }
+                    
                 }
                 Thread.Sleep(2000);
             }
+        }
+
+        static void BeepingState(bool theState)
+        {
+            shouldIContinueAskingForPassword = theState;
+            shouldIBeep = theState;
         }
     }
 }
